@@ -42,19 +42,36 @@ function shuffle(values) {
 
 //Selecting cards 
 const allCards = document.querySelectorAll('.card');
+let flippedCards = [];
 
 allCards.forEach(function(card) {
     card.addEventListener('click', function(e) {
-        card.classList.add('open', 'show')
-    console.log(card);
-    });
-});
+
+        if (!card.classList.contains('open') && !card.classList.contains('show') && !card.classList.contains('match')) {
+            flippedCards.push(card);
+            card.classList.add('open', 'show');
+            console.log('Open Cards:', flippedCards.length);
+
+            if (flippedCards.length == 2) {
+                setTimeout(function() {
+                    flippedCards.forEach(function(card) {
+                        card.classList.remove('open', 'show');
+                    });
+
+                    flippedCards = [];
+                }, 500);
+            }
+        }
+    });   
+});     
+    
+
 
 //Flipped cards function
-
 
 
 //Flipping card when click
 
 
 //Matching cards
+
