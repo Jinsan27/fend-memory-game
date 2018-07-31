@@ -1,6 +1,11 @@
 // Create a list that holds all of your cards
-const values = ["fa-diamond", "fa-diamond", "fa-paper-plane-o", "fa-paper-plane-o", "fa-anchor", "fa-anchor", "fa-bolt", "fa-bolt", "fa-cube", "fa-cube", "fa-leaf", "fa-leaf", "fa-bicycle", "fa-bicycle", "fa-diamond", "fa-diamond"];
-const deck = document.querySelector(".deck");
+const values = 
+    [
+    "fa-diamond", "fa-diamond", "fa-paper-plane-o", 
+    "fa-paper-plane-o", "fa-anchor", "fa-anchor", "fa-bolt", 
+    "fa-bolt", "fa-cube", "fa-cube", "fa-leaf", "fa-leaf", 
+    "fa-bicycle", "fa-bicycle", "fa-diamond", "fa-diamond"
+    ];
 
 /*
  * Display the cards on the page
@@ -23,7 +28,7 @@ function shuffle(values) {
         values[randomIndex] = temporaryValue;
     }
     return values;
-}
+};
 /*
  * set up the event listener for a card. If a card is clicked:
  *  - display the card's symbol (put this functionality in another function that you call from this one)
@@ -36,13 +41,17 @@ function shuffle(values) {
  */
 
 //Selecting cards 
+const allCards = document.querySelectorAll('.card');
 
-deck.addEventListener('click', event => {
-    const card = event.target;
-
-    
-    card.classList.add("show");
+allCards.forEach(function(card) {
+    card.addEventListener('click', function(e) {
+        card.classList.add('open', 'show')
+    console.log(card);
+    });
 });
+
+//Flipped cards function
+
 
 
 //Flipping card when click
