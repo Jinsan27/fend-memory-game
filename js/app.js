@@ -1,38 +1,29 @@
-/*
- * Create a list that holds all of your cards
- */
+// Create a list that holds all of your cards
 const values = ["fa-diamond", "fa-diamond", "fa-paper-plane-o", "fa-paper-plane-o", "fa-anchor", "fa-anchor", "fa-bolt", "fa-bolt", "fa-cube", "fa-cube", "fa-leaf", "fa-leaf", "fa-bicycle", "fa-bicycle", "fa-diamond", "fa-diamond"];
-const deck = document.querySelector(".deck"); 
-const cards = document.querySelectorAll(".deck .card"); 
-const score = document.querySelector(".moves"); 
-const restart = document.querySelector(".restart"); 
+const deck = document.querySelector(".deck");
+
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
  *   - loop through each card and create its HTML
  *   - add each card's HTML to the page
  */
-let matches; 
-let moves; 
-let selected; 
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 
-function shuffle(array) {
-    let currentIndex = array.length; 
-    let temporaryValue; 
-    let randomIndex;
+function shuffle(values) {
+    let currentIndex = values.length,
+    temporaryValue, randomIndex;
 
     while (currentIndex !== 0) {
         randomIndex = Math.floor(Math.random() * currentIndex);
         currentIndex -= 1;
-        temporaryValue = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
+        temporaryValue = values[currentIndex];
+        values[currentIndex] = values[randomIndex];
+        values[randomIndex] = temporaryValue;
     }
-    return array;
+    return values;
 }
-
 /*
  * set up the event listener for a card. If a card is clicked:
  *  - display the card's symbol (put this functionality in another function that you call from this one)
@@ -43,46 +34,18 @@ function shuffle(array) {
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
-//Select card 
-deck.addEventListener("click", event => { 
-    const card = event.target; 
 
-    //Is it a card & is it unlocked? 
-    if (isUnlockedCard(card)){ 
+//Selecting cards 
 
-        flipUp(card); 
+deck.addEventListener('click', event => {
+    const card = event.target;
 
-        //First pick 
-        if (selected === undefined){ 
-            selected = card; 
-        } 
-        //Second pick 
-        else{ 
-            //Equal 
-            if (value(card) === value(selected)){ 
-                matches--; 
-                match(card); 
-                match(selected); 
-            } 
-            //Not equal 
-            else{ 
-                flipDown(card); 
-                flipDown(selected); 
-            } 
-            selected = undefined; 
-            moves++; 
-            updateScore(); 
-        } 
-        checkEnd(); 
-    } 
-}); 
+    
+    card.classList.add("show");
+});
 
-function checkEnd(){ 
-  if (matches === 0){ 
-    console.log("Game finished!"); 
-  } 
-} 
 
-//Shuffle deck on start 
-init(); 
-} 
+//Flipping card when click
+
+
+//Matching cards
