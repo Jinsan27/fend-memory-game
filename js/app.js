@@ -53,7 +53,7 @@ function shuffle(values) {
  //starting the game by creating cards on board
 function init() {
     let deck = document.querySelector('.deck');
-    let cardHTML = values.map(function(card) {
+    let cardHTML = shuffle(values).map(function(card) {
        return generateCards(card);
    });
 
