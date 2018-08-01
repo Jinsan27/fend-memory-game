@@ -11,7 +11,7 @@ const values =
     "fa-camera", "fa-camera",
     ];
 
-//generation cards programatically
+//generate cards programatically
 function generateCards(card) {
     return `<li class="card" data-value="${card}"><i class="fa ${card}"></i>`;
     
@@ -75,7 +75,6 @@ allCards.forEach(function(card) {
             if (flippedCards.length == 2) {
                 //if they match
                 if (flippedCards[0].dataset.value == flippedCards[1].dataset.value) {
-                    console.log("Match!")
 
                     flippedCards[0].classList.add('match');
                     flippedCards[0].classList.add('open');
@@ -84,15 +83,19 @@ allCards.forEach(function(card) {
                     flippedCards[1].classList.add('show');
                     flippedCards[1].classList.add('open');
                     flippedCards[1].classList.add('match');
-                }
-                //if they don't match
-                setTimeout(function() {
-                    flippedCards.forEach(function(card) {
-                        card.classList.remove('open', 'show');
-                    });
 
                     flippedCards = [];
-                }, 500);
+
+                } else {
+                    //if they don't match
+                    setTimeout(function() {
+                        flippedCards.forEach(function(card) {
+                            card.classList.remove('open', 'show');
+                        });
+
+                        flippedCards = [];
+                    }, 500);
+                }
             }
             console.log(flippedCards);
         }
