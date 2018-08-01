@@ -1,11 +1,21 @@
 // Create a list that holds all of your cards
 const values = 
     [
-    "fa-diamond", "fa-diamond", "fa-paper-plane-o", 
-    "fa-paper-plane-o", "fa-anchor", "fa-anchor", "fa-bolt", 
-    "fa-bolt", "fa-cube", "fa-cube", "fa-leaf", "fa-leaf", 
-    "fa-bicycle", "fa-bicycle", "fa-diamond", "fa-diamond"
+    "fa-diamond", "fa-diamond", 
+    "fa-paper-plane-o", "fa-paper-plane-o", 
+    "fa-anchor", "fa-anchor", 
+    "fa-bolt", "fa-bolt", 
+    "fa-cube", "fa-cube", 
+    "fa-leaf", "fa-leaf", 
+    "fa-bicycle", "fa-bicycle", 
+    "fa-diamond", "fa-diamond",
     ];
+
+//generation cards programatically
+function generateCards(card) {
+    return `<li class="card"><i class="fa ${card}"></i>`;
+    
+};
 
 /*
  * Display the cards on the page
@@ -40,6 +50,17 @@ function shuffle(values) {
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
 
+ //starting the game by creating cards on board
+function init() {
+    let deck = document.querySelector('.deck');
+    let cardHTML = values.map(function(card) {
+       return generateCards(card);
+   });
+
+   deck.innerHTML = cardHTML.join('');
+};
+init();
+
 //Selecting cards 
 const allCards = document.querySelectorAll('.card');
 let flippedCards = [];
@@ -50,7 +71,12 @@ allCards.forEach(function(card) {
         if (!card.classList.contains('open') && !card.classList.contains('show') && !card.classList.contains('match')) {
             flippedCards.push(card);
             card.classList.add('open', 'show');
-            console.log('Open Cards:', flippedCards.length);
+            console.log(values);
+
+            //Matching cards
+            let firstFlippedCard = flippedCards[0].dataset.card;
+            console.log(firstFlippedCard);
+
 
             if (flippedCards.length == 2) {
                 setTimeout(function() {
@@ -73,5 +99,5 @@ allCards.forEach(function(card) {
 //Flipping card when click
 
 
-//Matching cards
+
 
