@@ -8,12 +8,12 @@ const values =
     "fa-cube", "fa-cube", 
     "fa-leaf", "fa-leaf", 
     "fa-bicycle", "fa-bicycle", 
-    "fa-diamond", "fa-diamond",
+    "fa-camera", "fa-camera",
     ];
 
 //generation cards programatically
 function generateCards(card) {
-    return `<li class="card"><i class="fa ${card}"></i>`;
+    return `<li class="card" data-value="${card}"><i class="fa ${card}"></i>`;
     
 };
 
@@ -71,14 +71,21 @@ allCards.forEach(function(card) {
         if (!card.classList.contains('open') && !card.classList.contains('show') && !card.classList.contains('match')) {
             flippedCards.push(card);
             card.classList.add('open', 'show');
-            console.log(values);
-
-            //Matching cards
-            let firstFlippedCard = flippedCards[0].dataset.card;
-            console.log(firstFlippedCard);
-
 
             if (flippedCards.length == 2) {
+                //if they match
+                if (flippedCards[0].dataset.value == flippedCards[1].dataset.value) {
+                    console.log("Match!")
+
+                    flippedCards[0].classList.add('match');
+                    flippedCards[0].classList.add('open');
+                    flippedCards[0].classList.add('show');
+
+                    flippedCards[1].classList.add('show');
+                    flippedCards[1].classList.add('open');
+                    flippedCards[1].classList.add('match');
+                }
+                //if they don't match
                 setTimeout(function() {
                     flippedCards.forEach(function(card) {
                         card.classList.remove('open', 'show');
@@ -87,6 +94,7 @@ allCards.forEach(function(card) {
                     flippedCards = [];
                 }, 500);
             }
+            console.log(flippedCards);
         }
     });   
 });     
