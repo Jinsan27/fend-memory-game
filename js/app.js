@@ -11,6 +11,8 @@ const values =
     "fa-camera", "fa-camera",
     ];
 
+let interval;
+
 //generate cards programatically
 function generateCards(card) {
     return `<li class="card" data-value="${card}"><i class="fa ${card}"></i>`;
@@ -65,11 +67,17 @@ init();
 const allCards = document.querySelectorAll('.card');
 let flippedCards = [];
 let selectionLock = false;
+let gameStarted = false;
+let cardsLeft = 16;
 
 allCards.forEach(function(card) {
     card.addEventListener('click', function(e) {
+        if (!gameStarted) {
+            gameStarted = true;
+            startTimer();
+        };
 
-        if (selectionLock) {
+        if (selectionLock === true) {
             return
         }
 
@@ -90,6 +98,17 @@ allCards.forEach(function(card) {
                     flippedCards[1].classList.add('match');
 
                     flippedCards = [];
+                    cardsLeft = cardsLeft - 2;
+
+                    if (cardsLeft === 0) {
+                        setTimeout(() => {
+                            stopTimer();
+                            alert('you win!')
+                        }, 100)
+                        
+                    }
+
+                    console.log('now left:', cardsLeft)
 
                 } else {
                     //if they don't match
@@ -114,7 +133,7 @@ let clicks = 0;
 
 document.onclick = function() {
     clicks += 1;
-    document.getElementById("clicks").innerHTML = clicks;
+    // document.getElementById("clicks").innerHTML = clicks;
     
 };
 
@@ -126,18 +145,20 @@ function format( val ) {
     return val > 9 ? val : "0" + val
 }
 
-/*const interval = setInterval(() => {
-    sec += 1;
-    const seconds = sec % 60;
-    const mins = Math.floor(sec / 60);
+//Start timer
+const startTimer = () => { 
+    interval = setInterval(() => {
+        sec += 1;
+        const seconds = sec % 60;
+        const mins = Math.floor(sec / 60);
 
-    document.getElementById("seconds").innerHTML=format(seconds)
-    document.getElementById("minutes").innerHTML=format(mins)
+        document.getElementById("seconds").innerHTML=format(seconds)
+        document.getElementById("minutes").innerHTML=format(mins)
 
-}, 1000);
+    }, 1000);
+};
 
 //Stop timer function
 function stopTimer() {
     clearInterval(interval);
 };
-*/
