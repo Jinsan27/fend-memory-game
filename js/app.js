@@ -64,9 +64,14 @@ init();
 //Selecting cards 
 const allCards = document.querySelectorAll('.card');
 let flippedCards = [];
+let selectionLock = false;
 
 allCards.forEach(function(card) {
     card.addEventListener('click', function(e) {
+
+        if (selectionLock) {
+            return
+        }
 
         if (!card.classList.contains('open') && !card.classList.contains('show') && !card.classList.contains('match')) {
             flippedCards.push(card);
@@ -88,7 +93,9 @@ allCards.forEach(function(card) {
 
                 } else {
                     //if they don't match
+                    selectionLock = true;
                     setTimeout(function() {
+                        selectionLock=false;
                         flippedCards.forEach(function(card) {
                             card.classList.remove('open', 'show');
                         });
@@ -119,17 +126,18 @@ function format( val ) {
     return val > 9 ? val : "0" + val
 }
 
-const interval = setInterval(() => {
+/*const interval = setInterval(() => {
     sec += 1;
     const seconds = sec % 60;
     const mins = Math.floor(sec / 60);
 
     document.getElementById("seconds").innerHTML=format(seconds)
     document.getElementById("minutes").innerHTML=format(mins)
-    
+
 }, 1000);
 
 //Stop timer function
 function stopTimer() {
     clearInterval(interval);
 };
+*/
