@@ -12,6 +12,7 @@ const values =
     ];
 
 let interval;
+let moves = 0;
 
 //generate cards programatically
 function generateCards(card) {
@@ -57,84 +58,98 @@ function init() {
     let deck = document.querySelector('.deck');
     let cardHTML = shuffle(values).map(function(card) {
        return generateCards(card);
-   });
+    });
 
-   deck.innerHTML = cardHTML.join('');
+    deck.innerHTML = cardHTML.join('');
+
+    const allCards = document.querySelectorAll('.card');
+
+    document.getElementById("restart").addEventListener('click', reset);
+
+    allCards.forEach(function(card) {
+        card.addEventListener('click', function(e) {
+            if (!gameStarted) {
+                gameStarted = true;
+                startTimer();
+            };
+
+            if (selectionLock === true) {
+                return
+            };
+
+            if (!card.classList.contains('open') && !card.classList.contains('show') && !card.classList.contains('match')) {
+                flippedCards.push(card);
+                card.classList.add('open', 'show');
+
+                if (flippedCards.length == 2) {
+                    incrementMoves();
+                    deletingStars();
+                    //if they match
+                    if (flippedCards[0].dataset.value == flippedCards[1].dataset.value) {
+
+                        flippedCards[0].classList.add('match');
+                        flippedCards[0].classList.add('open');
+                        flippedCards[0].classList.add('show');
+
+                        flippedCards[1].classList.add('show');
+                        flippedCards[1].classList.add('open');
+                        flippedCards[1].classList.add('match');
+
+                        flippedCards = [];
+                        cardsLeft = cardsLeft - 2;
+
+                        if (cardsLeft === 0) {
+                            setTimeout(() => {
+                                stopTimer();
+                                alert('you win!')
+                            }, 100)
+                            
+                        }
+
+                        console.log('now left:', cardsLeft)
+
+                    } else {
+                        //if they don't match
+                        selectionLock = true;
+                        setTimeout(function() {
+                            selectionLock=false;
+                            flippedCards.forEach(function(card) {
+                                card.classList.remove('open', 'show');
+                            });
+
+                            flippedCards = [];
+                        }, 500);
+                    }
+                }
+                console.log(flippedCards);
+            }
+        });   
+    });
 };
 init();
 
 //Selecting cards 
-const allCards = document.querySelectorAll('.card');
 let flippedCards = [];
 let selectionLock = false;
 let gameStarted = false;
 let cardsLeft = 16;
-
-allCards.forEach(function(card) {
-    card.addEventListener('click', function(e) {
-        if (!gameStarted) {
-            gameStarted = true;
-            startTimer();
-        };
-
-        if (selectionLock === true) {
-            return
-        }
-
-        if (!card.classList.contains('open') && !card.classList.contains('show') && !card.classList.contains('match')) {
-            flippedCards.push(card);
-            card.classList.add('open', 'show');
-
-            if (flippedCards.length == 2) {
-                //if they match
-                if (flippedCards[0].dataset.value == flippedCards[1].dataset.value) {
-
-                    flippedCards[0].classList.add('match');
-                    flippedCards[0].classList.add('open');
-                    flippedCards[0].classList.add('show');
-
-                    flippedCards[1].classList.add('show');
-                    flippedCards[1].classList.add('open');
-                    flippedCards[1].classList.add('match');
-
-                    flippedCards = [];
-                    cardsLeft = cardsLeft - 2;
-
-                    if (cardsLeft === 0) {
-                        setTimeout(() => {
-                            stopTimer();
-                            alert('you win!')
-                        }, 100)
-                        
-                    }
-
-                    console.log('now left:', cardsLeft)
-
-                } else {
-                    //if they don't match
-                    selectionLock = true;
-                    setTimeout(function() {
-                        selectionLock=false;
-                        flippedCards.forEach(function(card) {
-                            card.classList.remove('open', 'show');
-                        });
-
-                        flippedCards = [];
-                    }, 500);
-                }
-            }
-            console.log(flippedCards);
-        }
-    });   
-});     
     
-//Function for counting clicks - not working
-let clicks = 0;
+//Function for counting clicks
+function incrementMoves() {
+    moves = moves + 1;
+    document.querySelector('.moves').innerHTML=moves;
+};
+//Function killing stars
+function deletingStars() {
+    if (moves === 1) {
+        const stars = document.getElementById("stars");
+        stars.removeChild(stars.children[0]);
+    };
 
-document.onclick = function() {
-    clicks += 1;
-    // document.getElementById("clicks").innerHTML = clicks;
-    
+    if (moves === 2) {
+        const stars = document.getElementById("stars");
+        stars.removeChild(stars.children[0]);
+    };
 };
 
 
@@ -144,7 +159,6 @@ let sec = 0;
 function format( val ) {
     return val > 9 ? val : "0" + val
 }
-
 //Start timer
 const startTimer = () => { 
     interval = setInterval(() => {
@@ -161,4 +175,21 @@ const startTimer = () => {
 //Stop timer function
 function stopTimer() {
     clearInterval(interval);
+};
+
+//Function Reset button
+function reset() {
+    init();
+    cardsLeft = 16;
+    moves = 0;
+    document.querySelector('.moves').innerHTML = 0;
+    gameStarted = false
+    stopTimer()
+    document.getElementById("seconds").innerHTML = format(0);
+    document.getElementById("minutes").innerHTML = format(0);
+    sec = 0;
+    document.getElementById("stars").innerHTML =
+        `<li><i class="fa fa-star"></i></li>
+        <li><i class="fa fa-star"></i></li>
+        <li><i class="fa fa-star"></i></li>`
 };
